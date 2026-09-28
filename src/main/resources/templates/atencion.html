@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('Atención de Reclamo')}"></head>
+
+<body>
+
+    <nav th:replace="~{fragments/layout :: nav-admin('bandeja')}"></nav>
+
+    <main class="container my-4">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <a th:href="@{/reclamos/bandeja}" class="text-danger"><i class="fas fa-arrow-left"></i> Volver a bandeja</a>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap">
+            <div>
+                <h2 class="fw-bold">Atención de Reclamo N° <span th:text="${reclamo.codigoSeguimiento}"></span></h2>
+                <p class="text-muted small">Registrado el <span
+                        th:text="${#temporals.format(reclamo.fechaRegistro, 'dd/MM/yyyy')}"></span> por <span
+                        th:text="${reclamo.usuario.nombre}"></span></p>
+            </div>
+            <span class="badge fs-6 px-3 py-2 bg-warning text-dark"
+                th:text="${reclamo.estado.nombreEstado}">Pendiente</span>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">Información del Reclamo</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Tipo:</strong> <span th:text="${reclamo.categoria.nombreCategoria}"></span></p>
+                        <p><strong>Asunto:</strong> <span th:text="${reclamo.asunto}"></span></p>
+                        <p><strong>Descripción:</strong> <span th:text="${reclamo.descripcion}"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">Registrar Atención</h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/reclamos/atencion/{id}(id=${reclamo.idReclamo})}" method="post">
+                            <div class="mb-3">
+                                <label class="form-label">Estado <span class="text-danger">*</span></label>
+                                <select name="estado" class="form-select" required>
+                                    <option th:each="e : ${estados}" th:value="${e.idEstado}"
+                                        th:text="${e.nombreEstado}"></option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Área responsable <span class="text-danger">*</span></label>
+                                <select name="area" class="form-select" required>
+                                    <option th:each="a : ${areas}" th:value="${a.idArea}" th:text="${a.nombreArea}">
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Prioridad <span class="text-danger">*</span></label>
+                                <select name="prioridad" class="form-select" required>
+                                    <option value="ALTA">Alta</option>
+                                    <option value="MEDIA">Media</option>
+                                    <option value="BAJA">Baja</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Respuesta / Observaciones <span
+                                        class="text-danger">*</span></label>
+                                <textarea name="observacion" class="form-control" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Adjuntar documento</label>
+                                <input type="file" name="archivo" class="form-control" accept=".pdf,.jpg,.png">
+                            </div>
+                            <div class="d-flex justify-content-end gap-2">
+                                <a th:href="@{/reclamos/bandeja}" class="btn btn-secondary">Cancelar</a>
+                                <button type="submit" class="btn btn-danger"><i class="fas fa-save"></i> Guardar
+                                    Atención</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+    <div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('Bandeja de Reclamos')}"></head>
+
+<body>
+
+    <nav th:replace="~{fragments/layout :: nav-admin('bandeja')}"></nav>
+
+    <main class="container my-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+            <h2 class="fw-bold">Bandeja de Reclamos</h2>
+            <div class="d-flex gap-2">
+                <input type="text" class="form-control" placeholder="Buscar expediente...">
+                <select class="form-select" style="width:auto;">
+                    <option value="">Todos los estados</option>
+                    <option>Pendiente</option>
+                    <option>En proceso</option>
+                    <option>Resuelto</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm border-start border-warning border-4">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="bg-warning text-white rounded p-3"><i class="fas fa-clock fa-lg"></i></div>
+                        <div>
+                            <div class="fs-3 fw-bold" th:text="${pendientes}">24</div><small
+                                class="text-muted">Pendientes</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm border-start border-info border-4">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="bg-info text-white rounded p-3"><i class="fas fa-spinner fa-lg"></i></div>
+                        <div>
+                            <div class="fs-3 fw-bold" th:text="${enProceso}">15</div><small class="text-muted">En
+                                proceso</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm border-start border-success border-4">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="bg-success text-white rounded p-3"><i class="fas fa-check-circle fa-lg"></i></div>
+                        <div>
+                            <div class="fs-3 fw-bold" th:text="${resueltos}">156</div><small
+                                class="text-muted">Resueltos</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm border-start border-danger border-4">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="bg-danger text-white rounded p-3"><i class="fas fa-exclamation-triangle fa-lg"></i>
+                        </div>
+                        <div>
+                            <div class="fs-3 fw-bold" th:text="${vencidos}">3</div><small
+                                class="text-muted">Vencidos</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla -->
+        <div class="card shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>N° Expediente</th>
+                            <th>Fecha</th>
+                            <th>Ciudadano</th>
+                            <th>Asunto</th>
+                            <th>Tipo</th>
+                            <th>Estado</th>
+                            <th>Prioridad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="r : ${reclamos}" th:class="${r.prioridad == 'ALTA'} ? 'table-danger'">
+                            <td><strong th:text="${r.codigoSeguimiento}">EXP-001</strong></td>
+                            <td th:text="${#temporals.format(r.fechaRegistro, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${r.usuario.nombre + ' ' + r.usuario.apellidos}"></td>
+                            <td th:text="${r.asunto}"></td>
+                            <td th:text="${r.categoria.nombreCategoria}"></td>
+                            <td>
+                                <span class="badge"
+                                    th:classappend="${r.estado.nombreEstado == 'Pendiente'} ? 'bg-warning text-dark' : (${r.estado.nombreEstado == 'Resuelto'} ? 'bg-success' : 'bg-info')"
+                                    th:text="${r.estado.nombreEstado}"></span>
+                            </td>
+                            <td><span class="badge"
+                                    th:classappend="${r.prioridad == 'ALTA'} ? 'bg-danger' : (${r.prioridad == 'MEDIA'} ? 'bg-warning text-dark' : 'bg-secondary')"
+                                    th:text="${r.prioridad}"></span></td>
+                            <td>
+                                <a th:href="@{/reclamos/atencion/{id}(id=${r.idReclamo})}"
+                                    class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+    <div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('Registro de Ciudadano')}"></head>
+
+<body>
+
+    <nav th:replace="~{fragments/layout :: nav-ciudadano('')}"></nav>
+
+    <main class="container my-4" style="max-width:700px;">
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="fas fa-user-plus"></i> Datos Personales</h4>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/registro}" method="post">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Tipo de documento <span class="text-danger">*</span></label>
+                            <select name="tipoDocumento" class="form-select" required>
+                                <option value="DNI">DNI</option>
+                                <option value="CE">Carné de extranjería</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Número <span class="text-danger">*</span></label>
+                            <input type="text" name="numeroDocumento" class="form-control" maxlength="8" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Nombres <span class="text-danger">*</span></label>
+                            <input type="text" name="nombre" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Apellidos <span class="text-danger">*</span></label>
+                            <input type="text" name="apellidos" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de nacimiento <span class="text-danger">*</span></label>
+                            <input type="date" name="fechaNacimiento" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Género <span class="text-danger">*</span></label>
+                            <select name="genero" class="form-select" required>
+                                <option value="">Seleccione</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Teléfono <span class="text-danger">*</span></label>
+                            <input type="tel" name="celular" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Correo electrónico <span class="text-danger">*</span></label>
+                            <input type="email" name="correo" class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Dirección <span class="text-danger">*</span></label>
+                            <input type="text" name="direccion" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Contraseña <span class="text-danger">*</span></label>
+                            <input type="password" name="password" class="form-control" minlength="8" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Confirmar contraseña <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control" minlength="8" required>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="terms" required>
+                                <label class="form-check-label" for="terms">Acepto los <a href="#"
+                                        class="text-danger">términos y condiciones</a></label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer bg-light d-flex justify-content-end gap-2">
+                <a th:href="@{/login}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" form="registroForm" class="btn btn-danger"><i class="fas fa-user-plus"></i>
+                    Registrarse</button>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+    <div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+
+</html>

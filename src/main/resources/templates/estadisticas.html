@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('Panel de Estadísticas')}"></head>
+
+<body>
+
+    <nav th:replace="~{fragments/layout :: nav-admin('estadisticas')}"></nav>
+
+    <main class="container my-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+            <h2 class="fw-bold">Panel de Estadísticas</h2>
+            <div class="d-flex gap-2">
+                <select class="form-select" style="width:auto;">
+                    <option>2026</option>
+                    <option>2025</option>
+                </select>
+                <button class="btn btn-danger"><i class="fas fa-download"></i> Exportar</button>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm border-start border-danger border-4">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="bg-danger text-white rounded p-3"><i class="fas fa-file-alt fa-lg"></i></div>
+                        <div>
+                            <div class="fs-3 fw-bold" th:text="${totalReclamos}">1,245</div><small class="text-muted">Total
+                                Reclamos</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm border-start border-success border-4">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="bg-success text-white rounded p-3"><i class="fas fa-check-circle fa-lg"></i></div>
+                        <div>
+                            <div class="fs-3 fw-bold" th:text="${resueltos}">987</div><small
+                                class="text-muted">Resueltos</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm border-start border-warning border-4">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="bg-warning text-white rounded p-3"><i class="fas fa-clock fa-lg"></i></div>
+                        <div>
+                            <div class="fs-3 fw-bold" th:text="${pendientes}">156</div><small
+                                class="text-muted">Pendientes</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm border-start border-info border-4">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="bg-info text-white rounded p-3"><i class="fas fa-hourglass-half fa-lg"></i></div>
+                        <div>
+                            <div class="fs-3 fw-bold" th:text="${promedio}">3.2</div><small class="text-muted">Días
+                                promedio</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body"><canvas id="chartMeses"></canvas></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body"><canvas id="chartTipos"></canvas></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body"><canvas id="chartEstados"></canvas></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body"><canvas id="chartAreas"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+    <div th:replace="~{fragments/layout :: scripts}"></div>
+
+    <script th:inline="javascript">
+        const datosMeses = [[${ datosMeses }]];
+        const datosTipos = [[${ datosTipos }]];
+        const datosEstados = [[${ datosEstados }]];
+        const datosAreas = [[${ datosAreas }]];
+
+        new Chart(document.getElementById('chartMeses'), {
+            type: 'line',
+            data: { labels: datosMeses.labels, datasets: [{ label: 'Reclamos', data: datosMeses.data, borderColor: '#C8102E', backgroundColor: 'rgba(200,16,46,0.1)', fill: true }] },
+            options: { responsive: true }
+        });
+        new Chart(document.getElementById('chartTipos'), {
+            type: 'doughnut',
+            data: { labels: datosTipos.labels, datasets: [{ data: datosTipos.data, backgroundColor: ['#C8102E', '#E38F03', '#198754'] }] },
+            options: { responsive: true }
+        });
+        new Chart(document.getElementById('chartEstados'), {
+            type: 'bar',
+            data: { labels: datosEstados.labels, datasets: [{ label: 'Cantidad', data: datosEstados.data, backgroundColor: ['#E38F03', '#0d6efd', '#198754', '#dc3545'] }] },
+            options: { responsive: true }
+        });
+        new Chart(document.getElementById('chartAreas'), {
+            type: 'bar',
+            data: { labels: datosAreas.labels, datasets: [{ label: 'Reclamos', data: datosAreas.data, backgroundColor: '#C8102E' }] },
+            options: { responsive: true, indexAxis: 'y' }
+        });
+    </script>
+</body>
+
+</html>

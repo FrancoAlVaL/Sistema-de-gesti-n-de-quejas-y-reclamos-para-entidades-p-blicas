@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('Detalle de Reclamo')}"></head>
+
+<body>
+
+    <nav th:replace="~{fragments/layout :: nav-ciudadano('mis')}"></nav>
+
+    <main class="container my-4">
+        <nav aria-label="breadcrumb">
+            <a th:href="@{/reclamos/mis-reclamos}" class="text-danger"><i class="fas fa-arrow-left"></i> Volver a mis
+                reclamos</a>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap">
+            <div>
+                <h2 class="fw-bold mb-1">Expediente N° <span th:text="${reclamo.codigoSeguimiento}">EXP-001</span></h2>
+                <p class="text-muted small">Registrado el <span
+                        th:text="${#temporals.format(reclamo.fechaRegistro, 'dd/MM/yyyy')}">15/01/2026</span></p>
+            </div>
+            <span class="badge fs-6 px-3 py-2"
+                th:classappend="${reclamo.estado.nombreEstado == 'Pendiente'} ? 'bg-warning text-dark' : 'bg-success'"
+                th:text="${reclamo.estado.nombreEstado}">Pendiente</span>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">Información del Reclamo</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Tipo:</strong> <span th:text="${reclamo.categoria.nombreCategoria}"></span></p>
+                        <p><strong>Asunto:</strong> <span th:text="${reclamo.asunto}"></span></p>
+                        <p><strong>Descripción:</strong> <span th:text="${reclamo.descripcion}"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">Datos del Remitente</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Nombre:</strong> <span
+                                th:text="${reclamo.usuario.nombre + ' ' + reclamo.usuario.apellidos}"></span></p>
+                        <p><strong>DNI:</strong> <span th:text="${reclamo.usuario.numeroDocumento}"></span></p>
+                        <p><strong>Teléfono:</strong> <span th:text="${reclamo.usuario.celular}"></span></p>
+                        <p><strong>Correo:</strong> <span th:text="${reclamo.usuario.correo}"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">Seguimiento</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="border-start border-3 border-danger ps-3" th:each="h : ${respuestas}">
+                            <h6 th:text="${h.estado.nombreEstado}">Estado</h6>
+                            <small class="text-muted"
+                                th:text="${#temporals.format(h.fechaCambio, 'dd/MM/yyyy HH:mm')}"></small>
+                            <p th:text="${h.contenido}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+    <div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+
+</html>
