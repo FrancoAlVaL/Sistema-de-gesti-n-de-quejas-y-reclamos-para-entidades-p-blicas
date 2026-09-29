@@ -15,7 +15,9 @@
                     <option>2026</option>
                     <option>2025</option>
                 </select>
-                <button class="btn btn-danger"><i class="fas fa-download"></i> Exportar</button>
+                <button type="button" class="btn btn-danger" data-export-table="#tablaEstadisticas">
+                    <i class="fas fa-download"></i> Exportar
+                </button>
             </div>
         </div>
 
@@ -66,7 +68,7 @@
             </div>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4" id="tablaEstadisticas">
             <div class="col-md-6">
                 <div class="card shadow-sm">
                     <div class="card-body"><canvas id="chartMeses"></canvas></div>
@@ -94,32 +96,14 @@
     <div th:replace="~{fragments/layout :: scripts}"></div>
 
     <script th:inline="javascript">
-        const datosMeses = [[${ datosMeses }]];
-        const datosTipos = [[${ datosTipos }]];
-        const datosEstados = [[${ datosEstados }]];
-        const datosAreas = [[${ datosAreas }]];
-
-        new Chart(document.getElementById('chartMeses'), {
-            type: 'line',
-            data: { labels: datosMeses.labels, datasets: [{ label: 'Reclamos', data: datosMeses.data, borderColor: '#C8102E', backgroundColor: 'rgba(200,16,46,0.1)', fill: true }] },
-            options: { responsive: true }
-        });
-        new Chart(document.getElementById('chartTipos'), {
-            type: 'doughnut',
-            data: { labels: datosTipos.labels, datasets: [{ data: datosTipos.data, backgroundColor: ['#C8102E', '#E38F03', '#198754'] }] },
-            options: { responsive: true }
-        });
-        new Chart(document.getElementById('chartEstados'), {
-            type: 'bar',
-            data: { labels: datosEstados.labels, datasets: [{ label: 'Cantidad', data: datosEstados.data, backgroundColor: ['#E38F03', '#0d6efd', '#198754', '#dc3545'] }] },
-            options: { responsive: true }
-        });
-        new Chart(document.getElementById('chartAreas'), {
-            type: 'bar',
-            data: { labels: datosAreas.labels, datasets: [{ label: 'Reclamos', data: datosAreas.data, backgroundColor: '#C8102E' }] },
-            options: { responsive: true, indexAxis: 'y' }
-        });
+        window.reclamosStats = {
+            meses: /*[[${datosMeses}]]*/ {},
+            tipos: /*[[${datosTipos}]]*/ {},
+            estados: /*[[${datosEstados}]]*/ {},
+            areas: /*[[${datosAreas}]]*/ {}
+        };
     </script>
+    <script th:src="@{/js/estadisticas.js}" defer></script>
 </body>
 
 </html>

@@ -16,6 +16,9 @@
             </div>
             <div class="card-body p-4">
                 <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                <div th:if="${param.required}" class="alert alert-warning" role="alert">
+                    Inicia sesión para acceder a esa página.
+                </div>
                 <form th:action="@{/login}" method="post">
                     <div class="mb-3">
                         <label class="form-label"><i class="fas fa-user text-danger"></i> Correo electrónico</label>

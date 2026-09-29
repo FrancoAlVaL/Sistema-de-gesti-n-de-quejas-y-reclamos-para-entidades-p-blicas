@@ -8,22 +8,24 @@
     <nav th:replace="~{fragments/layout :: nav-ciudadano('mis')}"></nav>
 
     <main class="container my-4">
-        <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-4" data-filter-scope>
             <h2 class="fw-bold">Mis Reclamos</h2>
             <div class="d-flex gap-2">
-                <input type="text" class="form-control" placeholder="Buscar...">
-                <select class="form-select" style="width:auto;">
+                <input type="search" class="form-control" placeholder="Buscar..." data-text-filter
+                    data-filter-table="#tablaMisReclamos">
+                <select class="form-select" style="width:auto;" data-status-filter
+                    data-filter-table="#tablaMisReclamos">
                     <option value="">Todos los estados</option>
-                    <option>Pendiente</option>
-                    <option>En proceso</option>
-                    <option>Resuelto</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="En proceso">En proceso</option>
+                    <option value="Resuelto">Resuelto</option>
                 </select>
             </div>
         </div>
 
         <div class="card shadow-sm">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
+                <table id="tablaMisReclamos" class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
                             <th>N° Expediente</th>
@@ -35,7 +37,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="r : ${reclamos}">
+                        <tr th:each="r : ${reclamos}" th:attr="data-status=${r.estado.nombreEstado}">
                             <td><strong th:text="${r.codigoSeguimiento}">EXP-001</strong></td>
                             <td th:text="${#temporals.format(r.fechaRegistro, 'dd/MM/yyyy')}">15/01/2026</td>
                             <td th:text="${r.asunto}">Asunto</td>

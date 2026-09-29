@@ -4,8 +4,8 @@ import com.GRQ_proyMuni.demo.entity.Area;
 import com.GRQ_proyMuni.demo.repository.AreaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class AreaService {

@@ -42,7 +42,8 @@
                         <h5 class="mb-0">Registrar Atención</h5>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/reclamos/atencion/{id}(id=${reclamo.idReclamo})}" method="post">
+                        <form th:action="@{/reclamos/atencion/{id}(id=${reclamo.idReclamo})}" method="post"
+                            enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label class="form-label">Estado <span class="text-danger">*</span></label>
                                 <select name="estado" class="form-select" required>

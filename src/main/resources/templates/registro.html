@@ -13,7 +13,8 @@
                 <h4 class="mb-0"><i class="fas fa-user-plus"></i> Datos Personales</h4>
             </div>
             <div class="card-body">
-                <form th:action="@{/registro}" method="post">
+                <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+                <form id="registroForm" th:action="@{/usuarios/registro}" method="post" data-confirm-password>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Tipo de documento <span class="text-danger">*</span></label>
@@ -24,7 +25,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Número <span class="text-danger">*</span></label>
-                            <input type="text" name="numeroDocumento" class="form-control" maxlength="8" required>
+                            <input type="text" name="numeroDocumento" class="form-control" maxlength="30" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Nombres <span class="text-danger">*</span></label>
@@ -60,15 +61,17 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Contraseña <span class="text-danger">*</span></label>
-                            <input type="password" name="password" class="form-control" minlength="8" required>
+                            <input type="password" name="password" class="form-control" minlength="8"
+                                autocomplete="new-password" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Confirmar contraseña <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" minlength="8" required>
+                            <input type="password" name="passwordConfirm" class="form-control" minlength="8"
+                                autocomplete="new-password" required>
                         </div>
                         <div class="col-12">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="terms" required>
+                                <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
                                 <label class="form-check-label" for="terms">Acepto los <a href="#"
                                         class="text-danger">términos y condiciones</a></label>
                             </div>

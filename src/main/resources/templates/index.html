@@ -24,7 +24,9 @@
 
             <!-- Formulario -->
             <section class="col-lg-8">
-                <form th:action="@{/reclamos/guardar}" method="post" enctype="multipart/form-data">
+                <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+                <form th:action="@{/reclamos/guardar}" th:object="${reclamoForm}" method="post"
+                    enctype="multipart/form-data">
                     <!-- Datos del remitente -->
                     <div class="card shadow-sm mb-3">
                         <div class="card-header bg-danger text-white">
@@ -34,31 +36,32 @@
                             <div class="row g-3">
                                 <div class="col-md-3">
                                     <label class="form-label">Documento</label>
-                                    <select name="tipoDocumento" class="form-select">
+                                    <select th:field="*{tipoDocumentoRemitente}" class="form-select">
                                         <option value="DNI">DNI</option>
                                         <option value="CE">Carné de extranjería</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Número <span class="text-danger">*</span></label>
-                                    <input type="text" name="numeroDocumento" class="form-control" required>
+                                    <input type="text" th:field="*{numeroDocumento}" class="form-control"
+                                        maxlength="30" required>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Nombres <span class="text-danger">*</span></label>
-                                    <input type="text" name="nombre" class="form-control" required>
+                                    <input type="text" th:field="*{nombre}" class="form-control" maxlength="100" required>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Apellidos <span class="text-danger">*</span></label>
-                                    <input type="text" name="apellidos" class="form-control" required>
+                                    <input type="text" th:field="*{apellidos}" class="form-control" maxlength="150" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Teléfono <span class="text-danger">*</span></label>
-                                    <input type="tel" name="celular" class="form-control" required>
+                                    <input type="tel" th:field="*{celular}" class="form-control" maxlength="20" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Correo electrónico <span
                                             class="text-danger">*</span></label>
-                                    <input type="email" name="correo" class="form-control" required>
+                                    <input type="email" th:field="*{correo}" class="form-control" maxlength="150" required>
                                 </div>
                             </div>
                         </div>
@@ -74,7 +77,15 @@
                                 <div class="col-md-4">
                                     <label class="form-label">Tipo de documento <span
                                             class="text-danger">*</span></label>
-                                    <select name="categoria" class="form-select" required>
+                                    <select th:field="*{tipoDocumentoId}" class="form-select" required>
+                                        <option value="" disabled selected>Selecciona</option>
+                                        <option th:each="tipo : ${tipos}" th:value="${tipo.idTipoDocumento}"
+                                            th:text="${tipo.nombreTipo}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Categoría <span class="text-danger">*</span></label>
+                                    <select th:field="*{categoriaId}" class="form-select" required>
                                         <option value="" disabled selected>Selecciona</option>
                                         <option th:each="cat : ${categorias}" th:value="${cat.idCategoria}"
                                             th:text="${cat.nombreCategoria}"></option>
@@ -82,28 +93,29 @@
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label">Número</label>
-                                    <input type="text" name="numeroDoc" class="form-control" placeholder="S/N">
+                                    <input type="text" th:field="*{numeroDoc}" class="form-control" placeholder="S/N">
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label">Fecha <span class="text-danger">*</span></label>
-                                    <input type="date" name="fechaDocumento" class="form-control" required>
+                                    <input type="date" th:field="*{fechaDocumento}" class="form-control"
+                                        data-no-future required>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Asunto <span class="text-danger">*</span></label>
-                                    <input type="text" name="asunto" class="form-control" maxlength="250" required>
+                                    <input type="text" th:field="*{asunto}" class="form-control" maxlength="200" required>
                                 </div>
                                 <div class="col-md-8">
                                     <label class="form-label">Descripción <span class="text-danger">*</span></label>
-                                    <textarea name="descripcion" class="form-control" rows="3" required></textarea>
+                                    <textarea th:field="*{descripcion}" class="form-control" rows="3" required></textarea>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Archivo PDF <span class="text-danger">*</span></label>
-                                    <input type="file" name="archivoEvidencia" class="form-control" accept=".pdf"
+                                    <input type="file" th:field="*{archivoEvidencia}" class="form-control" accept=".pdf"
                                         required>
                                 </div>
                                 <div class="col-md-12">
                                     <label class="form-label">Observaciones</label>
-                                    <input type="text" name="observaciones" class="form-control" maxlength="120">
+                                    <input type="text" th:field="*{observaciones}" class="form-control" maxlength="120">
                                 </div>
                             </div>
                         </div>

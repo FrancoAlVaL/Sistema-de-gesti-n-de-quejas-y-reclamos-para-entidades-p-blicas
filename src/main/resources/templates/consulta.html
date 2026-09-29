@@ -22,17 +22,32 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Número de expediente <span class="text-danger">*</span></label>
-                            <input type="text" name="expediente" class="form-control" required>
+                            <input type="text" name="expediente" class="form-control" th:value="${expediente}"
+                                required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">DNI del remitente <span class="text-danger">*</span></label>
-                            <input type="text" name="dni" class="form-control" maxlength="8" required>
+                            <input type="text" name="dni" class="form-control" maxlength="30"
+                                th:value="${dni}" required>
                         </div>
                     </div>
+                    <div th:if="${noEncontrado}" class="alert alert-warning mt-3" role="alert">
+                        No se encontró un expediente con esos datos.
+                    </div>
+                    <div th:if="${reclamo}" class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${reclamo.codigoSeguimiento}"></h5>
+                            <p class="mb-1"><strong>Asunto:</strong> <span th:text="${reclamo.asunto}"></span></p>
+                            <p class="mb-1"><strong>Estado:</strong> <span th:text="${reclamo.estado.nombreEstado}"></span></p>
+                            <p class="mb-0"><strong>Registrado:</strong>
+                                <span th:text="${#temporals.format(reclamo.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light d-flex justify-content-end mt-3">
+                        <button type="submit" class="btn btn-danger"><i class="fas fa-search"></i> Buscar</button>
+                    </div>
                 </form>
-            </div>
-            <div class="card-footer bg-light d-flex justify-content-end">
-                <button class="btn btn-danger"><i class="fas fa-search"></i> Buscar</button>
             </div>
         </div>
     </main>

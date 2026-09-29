@@ -29,6 +29,10 @@ public class ReclamoService {
         return reclamoRepository.findByEstadoIdEstado(idEstado);
     }
 
+    public Optional<Reclamo> buscarPorCodigoYDocumento(String codigo, String numeroDocumento) {
+        return reclamoRepository.findByCodigoSeguimientoAndUsuarioNumeroDocumento(codigo, numeroDocumento);
+    }
+
     public Reclamo guardar(Reclamo reclamo) {
         return reclamoRepository.save(reclamo);
     }

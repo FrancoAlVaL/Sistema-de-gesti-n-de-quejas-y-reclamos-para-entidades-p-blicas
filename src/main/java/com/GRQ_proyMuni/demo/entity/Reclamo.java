@@ -71,5 +71,40 @@ public class Reclamo {
     public Reclamo() {
     }
 
-    // Getters y setters
+    public Integer getIdReclamo() { return idReclamo; }
+    public void setIdReclamo(Integer idReclamo) { this.idReclamo = idReclamo; }
+    public String getCodigoSeguimiento() { return codigoSeguimiento; }
+    public void setCodigoSeguimiento(String codigoSeguimiento) { this.codigoSeguimiento = codigoSeguimiento; }
+    public String getNumeroDocumento() { return numeroDocumento; }
+    public void setNumeroDocumento(String numeroDocumento) { this.numeroDocumento = numeroDocumento; }
+    public LocalDate getFechaDocumento() { return fechaDocumento; }
+    public void setFechaDocumento(LocalDate fechaDocumento) { this.fechaDocumento = fechaDocumento; }
+    public String getAsunto() { return asunto; }
+    public void setAsunto(String asunto) { this.asunto = asunto; }
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+    public String getArchivoEvidencia() { return archivoEvidencia; }
+    public void setArchivoEvidencia(String archivoEvidencia) { this.archivoEvidencia = archivoEvidencia; }
+    public Integer getFolios() { return folios; }
+    public void setFolios(Integer folios) { this.folios = folios; }
+    public String getObservaciones() { return observaciones; }
+    public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
+    public String getPrioridad() { return prioridad; }
+    public void setPrioridad(String prioridad) { this.prioridad = prioridad; }
+    public LocalDateTime getFechaRegistro() { return fechaRegistro; }
+    public void setFechaRegistro(LocalDateTime fechaRegistro) { this.fechaRegistro = fechaRegistro; }
+    public LocalDateTime getFechaCierre() { return fechaCierre; }
+    public void setFechaCierre(LocalDateTime fechaCierre) { this.fechaCierre = fechaCierre; }
+    public LocalDateTime getFechaVencimiento() { return fechaVencimiento; }
+    public void setFechaVencimiento(LocalDateTime fechaVencimiento) { this.fechaVencimiento = fechaVencimiento; }
+    public Usuario getUsuario() { return usuario; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
+    public TipoDocumento getTipoDocumento() { return tipoDocumento; }
+    public void setTipoDocumento(TipoDocumento tipoDocumento) { this.tipoDocumento = tipoDocumento; }
+    public Categoria getCategoria() { return categoria; }
+    public void setCategoria(Categoria categoria) { this.categoria = categoria; }
+    public Estado getEstado() { return estado; }
+    public void setEstado(Estado estado) { this.estado = estado; }
+    public Area getArea() { return area; }
+    public void setArea(Area area) { this.area = area; }
 }

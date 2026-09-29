@@ -58,10 +58,18 @@
                     </div>
                     <div class="card-body">
                         <div class="border-start border-3 border-danger ps-3" th:each="h : ${respuestas}">
-                            <h6 th:text="${h.estado.nombreEstado}">Estado</h6>
+                            <h6 th:text="${h.estadoRespuesta}">Estado</h6>
                             <small class="text-muted"
-                                th:text="${#temporals.format(h.fechaCambio, 'dd/MM/yyyy HH:mm')}"></small>
+                                th:text="${#temporals.format(h.fechaRespuesta, 'dd/MM/yyyy HH:mm')}"></small>
                             <p th:text="${h.contenido}"></p>
+                            <a th:if="${h.archivoAdjunto}" th:href="@{/reclamos/respuestas/{id}/archivo(id=${h.idRespuesta})}">
+                                Descargar adjunto
+                            </a>
+                        </div>
+                        <div class="col-12" th:if="${reclamo.observaciones}">
+                            <div class="alert alert-info mb-0">
+                                <strong>Última atención:</strong> <span th:text="${reclamo.observaciones}"></span>
+                            </div>
                         </div>
                     </div>
                 </div>

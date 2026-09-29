@@ -4,6 +4,7 @@ import com.GRQ_proyMuni.demo.entity.Reclamo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReclamoRepository extends JpaRepository<Reclamo, Integer> {
@@ -12,4 +13,7 @@ public interface ReclamoRepository extends JpaRepository<Reclamo, Integer> {
     
     // Buscar reclamos por su estado actual
     List<Reclamo> findByEstadoIdEstado(Integer idEstado);
+
+    Optional<Reclamo> findByCodigoSeguimientoAndUsuarioNumeroDocumento(String codigoSeguimiento,
+                                                                        String numeroDocumento);
 }

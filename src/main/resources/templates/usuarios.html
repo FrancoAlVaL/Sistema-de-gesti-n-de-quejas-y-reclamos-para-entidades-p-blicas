@@ -9,7 +9,7 @@
 
     <main class="container my-4">
         <nav aria-label="breadcrumb" class="mb-3">
-            <a th:href="@{/estadisticas}" class="text-danger"><i class="fas fa-home"></i> Inicio</a>
+            <a th:href="@{/admin/estadisticas}" class="text-danger"><i class="fas fa-home"></i> Inicio</a>
             <span class="text-muted mx-2">/</span>
             <span class="text-muted">Gestión de Usuarios</span>
         </nav>
@@ -20,7 +20,9 @@
                 <small class="text-muted">Administre los usuarios del sistema</small>
             </div>
             <div class="d-flex gap-2">
-                <button class="btn btn-outline-danger"><i class="fas fa-file-export"></i> Exportar</button>
+                <button class="btn btn-outline-danger" type="button" data-export-table="#tablaUsuarios">
+                    <i class="fas fa-file-export"></i> Exportar
+                </button>
                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalUsuario">
                     <i class="fas fa-user-plus"></i> Nuevo Usuario
                 </button>
@@ -76,31 +78,31 @@
         </div>
 
         <!-- Filtros -->
-        <div class="card shadow-sm mb-3">
+        <div class="card shadow-sm mb-3" data-filter-scope>
             <div class="card-body">
                 <div class="row g-2">
                     <div class="col-md-4">
-                        <input type="text" class="form-control" placeholder="Buscar por nombre, correo o DNI...">
+                        <input type="search" class="form-control" placeholder="Buscar por nombre, correo o DNI..."
+                            data-text-filter data-filter-table="#tablaUsuarios">
                     </div>
-                    <div class="col-md-2"><select class="form-select">
+                    <div class="col-md-2"><select class="form-select" data-role-filter
+                            data-filter-table="#tablaUsuarios">
                             <option value="">Todos los roles</option>
-                            <option>Administrador</option>
-                            <option>Operador</option>
-                            <option>Revisor</option>
-                            <option>Ciudadano</option>
+                            <option th:each="r : ${roles}" th:value="${r.nombreRol}" th:text="${r.nombreRol}"></option>
                         </select></div>
-                    <div class="col-md-2"><select class="form-select">
+                    <div class="col-md-2"><select class="form-select" data-active-filter
+                            data-filter-table="#tablaUsuarios">
                             <option value="">Todos los estados</option>
-                            <option>Activo</option>
-                            <option>Inactivo</option>
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
                         </select></div>
-                    <div class="col-md-2"><select class="form-select">
+                    <div class="col-md-2"><select class="form-select" data-area-filter
+                            data-filter-table="#tablaUsuarios">
                             <option value="">Todas las áreas</option>
-                            <option>Obras Públicas</option>
-                            <option>Servicios Públicos</option>
-                            <option>Administración</option>
+                            <option th:each="a : ${areas}" th:value="${a.nombreArea}" th:text="${a.nombreArea}"></option>
                         </select></div>
-                    <div class="col-md-2"><button class="btn btn-outline-secondary w-100"><i
+                    <div class="col-md-2"><button type="button" data-clear-filters
+                            class="btn btn-outline-secondary w-100"><i
                                 class="fas fa-sync-alt"></i> Limpiar</button></div>
                 </div>
             </div>
@@ -109,7 +111,7 @@
         <!-- Tabla -->
         <div class="card shadow-sm">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
+                <table id="tablaUsuarios" class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
                             <th>#</th>
@@ -124,7 +126,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="u, iter : ${usuarios}">
+                        <tr th:each="u, iter : ${usuarios}"
+                            th:attr="data-role=${u.rol.nombreRol},data-area=${u.area.nombreArea},data-active=${u.estadoActivo}">
                             <td th:text="${iter.index + 1}">1</td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
@@ -146,9 +149,13 @@
                             <td><span class="badge" th:classappend="${u.estadoActivo} ? 'bg-success' : 'bg-danger'"
                                     th:text="${u.estadoActivo ? 'Activo' : 'Inactivo'}"></span></td>
                             <td>
-                                <button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button>
-                                <button class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                <form th:action="@{/usuarios/{id}/estado(id=${u.idUsuario})}" method="post">
+                                    <button type="submit" class="btn btn-sm"
+                                        th:classappend="${u.estadoActivo} ? 'btn-outline-danger' : 'btn-outline-success'"
+                                        th:title="${u.estadoActivo} ? 'Desactivar usuario' : 'Activar usuario'">
+                                        <i class="fas" th:classappend="${u.estadoActivo} ? 'fa-user-slash' : 'fa-user-check'"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     </tbody>
@@ -166,7 +173,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:action="@{/usuarios}" method="post">
+                    <form id="formUsuario" th:action="@{/usuarios}" method="post" data-confirm-password>
                         <div class="row g-3">
                             <div class="col-md-6"><label class="form-label">Tipo documento</label><select
                                     name="tipoDocumento" class="form-select">
@@ -189,13 +196,13 @@
                                         class="text-danger">*</span></label><input type="tel" name="celular"
                                     class="form-control" required></div>
                             <div class="col-md-6"><label class="form-label">Rol <span
-                                        class="text-danger">*</span></label><select name="rol" class="form-select"
+                                        class="text-danger">*</span></label><select name="rol.idRol" class="form-select"
                                     required>
                                     <option th:each="r : ${roles}" th:value="${r.idRol}" th:text="${r.nombreRol}">
                                     </option>
                                 </select></div>
                             <div class="col-md-6"><label class="form-label">Área <span
-                                        class="text-danger">*</span></label><select name="area" class="form-select"
+                                        class="text-danger">*</span></label><select name="area.idArea" class="form-select"
                                     required>
                                     <option th:each="a : ${areas}" th:value="${a.idArea}" th:text="${a.nombreArea}">
                                     </option>
@@ -204,7 +211,8 @@
                                         class="text-danger">*</span></label><input type="password" name="password"
                                     class="form-control" required></div>
                             <div class="col-md-6"><label class="form-label">Confirmar <span
-                                        class="text-danger">*</span></label><input type="password" class="form-control"
+                                        class="text-danger">*</span></label><input type="password"
+                                    name="passwordConfirm" class="form-control"
                                     required></div>
                         </div>
                     </form>
